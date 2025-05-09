@@ -29,9 +29,10 @@ npm install
 
 ### 2. Create .env.local File
 ```env
-GMAIL_USER=yourgmail@gmail.com
-APP_PASS=yourapppassword
-TO_EMAIL=recipient@gmail.com
+GMAIL_USER="yourgmail@gmail.com"
+APP_PASS="yourapppassword"
+TO_EMAIL="recipient@gmail.com"
+ACCESS_ORIGIN="http://localhost:5173,http://localhost:3000,https://yourdomain.com"
 ```
 ⚠️ Use a Gmail App Password if you have 2FA enabled.
 

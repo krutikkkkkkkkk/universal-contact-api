@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server"
 import nodemailer from "nodemailer"
 
+// Enable CORS
+function enableCors(response) {
+  response.headers.set("Access-Control-Allow-Origin", `${process.env.ACCESS_ORIGIN}`)
+  response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS")
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type")
+  return response
+}
+
 export async function POST(request) {
   try {
     // Parse the request body
@@ -29,16 +37,21 @@ export async function POST(request) {
     })
 
     // Return success response with CORS headers
-    const successResponse = NextResponse.json({ success: true, message: "Email sent" }, { status: 200 })
-    successResponse.headers.set("Access-Control-Allow-Origin", "*")
-    console.error("Error:", error)
-    response.headers.set("Access-Control-Allow-Origin", "*")
-    response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS")
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type")
-    return response
+    let successResponse = NextResponse.json({ success: true, message: "Email sent" }, { status: 200 })
+    successResponse = enableCors(successResponse)
+    return successResponse
   } catch (error) {
     // Log the error and return error response
     console.error("Error:", error)
-    return NextResponse.json({ success: false, message: "Email failed" }, { status: 500 })
+    let errorResponse = NextResponse.json({ success: false, message: "Email failed" }, { status: 500 })
+    errorResponse = enableCors(errorResponse)
+    return errorResponse
   }
+}
+
+export async function OPTIONS() {
+  // Handle preflight requests
+  let response = NextResponse.json({}, { status: 204 })
+  response = enableCors(response)
+  return response
 }
