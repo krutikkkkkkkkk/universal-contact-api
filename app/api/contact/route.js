@@ -28,8 +28,14 @@ export async function POST(request) {
       html: `<h2>New Submission</h2>${htmlContent}`,
     })
 
-    // Return success response
-    return NextResponse.json({ success: true, message: "Email sent" }, { status: 200 })
+    // Return success response with CORS headers
+    const successResponse = NextResponse.json({ success: true, message: "Email sent" }, { status: 200 })
+    successResponse.headers.set("Access-Control-Allow-Origin", "*")
+    console.error("Error:", error)
+    response.headers.set("Access-Control-Allow-Origin", "*")
+    response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS")
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type")
+    return response
   } catch (error) {
     // Log the error and return error response
     console.error("Error:", error)
